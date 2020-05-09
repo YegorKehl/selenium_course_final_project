@@ -32,4 +32,5 @@ class ProductPage(BasePage):
         assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME_IN_SUCCESS_ALERT),\
             "There is no product name in success alert"
         product_name_in_success_alert = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME_IN_SUCCESS_ALERT)
-        assert product_name == product_name_in_success_alert.text
+        assert product_name == product_name_in_success_alert.text,\
+            "Product name in product page and in success alert is not equal"
