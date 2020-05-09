@@ -23,7 +23,7 @@ class ProductPage(BasePage):
         assert self.is_element_present(*ProductPageLocators.BASKET_TOTAL_IN_INFO_ALERT),\
             "There is no basket total in info alert"
         basket_total_in_info_alert = self.browser.find_element(*ProductPageLocators.BASKET_TOTAL_IN_INFO_ALERT)
-        assert price in basket_total_in_info_alert.text,\
+        assert price == basket_total_in_info_alert.text,\
             "Price of product is not equal to basket total in info alert"
 
     def should_be_product_name(self):

@@ -1,7 +1,43 @@
 from .pages.product_page import ProductPage
 from .pages.basket_page import BasketPage
 from .pages.login_page import LoginPage
+from time import time, sleep
 import pytest
+import random
+import string
+
+
+@pytest.mark.user
+class TestUserAddToBasketFromProductPage:
+    def random_string(self, string_length=9) -> str:
+        letters = string.ascii_letters
+        return "".join(random.choice(letters) for i in range(string_length))
+
+    # use bad practice, as it needed by task in 4.3.13
+    @pytest.fixture(scope="function", autouse=True)
+    def setup(self, browser):
+        login_url = "http://selenium1py.pythonanywhere.com/accounts/login/"
+        login_page = LoginPage(browser, login_url)
+        login_page.open()
+        email = str(time()) + "@fakemail.org"
+        password = self.random_string()
+        login_page.register_new_user(email, password)
+        login_page.should_be_authorized_user()
+        self.product_link = "http://selenium1py.pythonanywhere.com/catalogue/coders-at-work_207/"
+
+    def test_user_cant_see_success_message(self, browser):
+        product_page = ProductPage(browser, self.product_link)
+        product_page.open()
+        product_page.should_not_be_success_message()
+
+    def test_user_can_add_product_to_basket(self, browser):
+        product_page = ProductPage(browser, self.product_link)
+        product_page.open()
+        product_page.add_to_basket()
+        product_page.should_be_product_name()
+        product_page.should_be_color_price()
+        product_page.should_be_success_alert(product_page.product_name())
+        product_page.should_be_info_alert(product_page.color_price())
 
 
 @pytest.mark.parametrize('promo', ["?promo=offer0",
