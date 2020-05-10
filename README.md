@@ -10,3 +10,6 @@ Usage example: `pytest -v --tb=line --language=en --browser=chrome -m need_revie
 If `--language` isn't specified, English is used by default.
 
 If `--browser` isn't specified, Chrome or Chromium is used by default.
+
+
+Written on Python 3.6.10
