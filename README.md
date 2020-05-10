@@ -1,8 +1,12 @@
-# selenium_course_3_6_9
-This is a repository for my final project on the Stepic's Selenium+Python course.
+# selenium_course_final_project
+This is my final project on the Stepic's Selenium+Python course.
 
+Here are a UI-tests for the online store http://selenium1py.pythonanywhere.com/.
 
 Link to the course: https://stepik.org/course/575
 
-#### WORK IN PROGRESS
+Usage example: `pytest -v --tb=line --language=en --browser=chrome -m need_review`
 
+If `--language` isn't specified, English is used by default.
+
+If `--browser` isn't specified, Chrome or Chromium is used by default.

@@ -5,7 +5,7 @@ import math
 
 
 class ProductPage(BasePage):
-    def add_to_basket(self):
+    def add_to_basket(self) -> None:
         add_to_basket_button = self.browser.find_element(*ProductPageLocators.ADD_TO_BASKET_BUTTON)
         add_to_basket_button.click()
 
@@ -15,40 +15,46 @@ class ProductPage(BasePage):
     def product_name(self) -> str:
         return self.browser.find_element(*ProductPageLocators.PRODUCT_NAME).text
 
-    def should_be_color_price(self):
-        assert self.is_element_present(*ProductPageLocators.COLOR_PRICE), "There is no color price under product name"
+    def should_be_color_price(self) -> None:
+        assert self.is_element_present(*ProductPageLocators.COLOR_PRICE), \
+            "There is no color price under product name"
 
-    def should_be_info_alert(self, price: str):
-        assert self.is_element_present(*ProductPageLocators.INFO_ALERT), "There is no info alert"
-        assert self.is_element_present(*ProductPageLocators.BASKET_TOTAL_IN_INFO_ALERT),\
+    def should_be_info_alert(self, price: str) -> None:
+        assert self.is_element_present(*ProductPageLocators.INFO_ALERT), \
+            "There is no info alert"
+        assert self.is_element_present(*ProductPageLocators.BASKET_TOTAL_IN_INFO_ALERT), \
             "There is no basket total in info alert"
         basket_total_in_info_alert = self.browser.find_element(*ProductPageLocators.BASKET_TOTAL_IN_INFO_ALERT)
-        assert price == basket_total_in_info_alert.text,\
+        assert price == basket_total_in_info_alert.text, \
             "Price of product is not equal to basket total in info alert"
 
-    def should_be_product_name(self):
-        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), "There is no product name"
+    def should_be_product_name(self) -> None:
+        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME), \
+            "There is no product name"
 
-    def should_be_success_alert(self, product_name: str):
-        assert self.is_element_present(*ProductPageLocators.SUCCESS_ALERT), "There is no success alert"
-        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME_IN_SUCCESS_ALERT),\
+    def should_be_success_alert(self, product_name: str) -> None:
+        assert self.is_element_present(*ProductPageLocators.SUCCESS_ALERT), \
+            "There is no success alert"
+        assert self.is_element_present(*ProductPageLocators.PRODUCT_NAME_IN_SUCCESS_ALERT), \
             "There is no product name in success alert"
+        # This is workaround for behavior of Firefox, when element might be present in DOM earlier than his text:
+        self.is_text_in_element_present(*ProductPageLocators.PRODUCT_NAME_IN_SUCCESS_ALERT, product_name)
         product_name_in_success_alert = self.browser.find_element(*ProductPageLocators.PRODUCT_NAME_IN_SUCCESS_ALERT)
-        assert product_name == product_name_in_success_alert.text,\
+        assert product_name == product_name_in_success_alert.text, \
             "Product name in product page and in success alert is not equal"
 
-    def should_not_be_success_message(self):
-        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_ALERT),\
+    def should_not_be_success_message(self) -> None:
+        assert self.is_not_element_present(*ProductPageLocators.SUCCESS_ALERT), \
             "Success message is presented, but should not be"
 
-    def should_be_disappeared_success_message(self):
-        assert self.is_disappeared(*ProductPageLocators.SUCCESS_ALERT),\
+    def should_be_disappeared_success_message(self) -> None:
+        assert self.is_disappeared(*ProductPageLocators.SUCCESS_ALERT), \
             "Success message should be disappeared, but it is showed"
 
-    def solve_quiz_and_get_code(self):
+    def solve_quiz_and_get_code(self) -> None:
         alert = self.browser.switch_to.alert
-        x = alert.text.split(" ")[2]
-        answer = str(math.log(abs((12 * math.sin(float(x))))))
+        x = float(alert.text.split(" ")[2])
+        answer = str(math.log(abs((12 * math.sin(x)))))
         alert.send_keys(answer)
         alert.accept()
         try:
